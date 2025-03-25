@@ -99,4 +99,4 @@ echo "quit" >>flashBin.jlink
 # 3.2 Flash the XMC4800 board using jlink
 JLinkExe -device XMC4800-2048 -nogui 1 -if swd -speed 4000kHz -commandfile flashBin.jlink
 ls -lh
-rm flashBin.jlink
+rm flashBin.jlink 
