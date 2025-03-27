@@ -259,136 +259,17 @@ int main(int argc, char *argv[])
         state_machines[i].setCommand(CANOpenCommand::ENABLE);
 
         // parameters cofiguration - Torque and position 
-        output_pdos[i]->mode_of_operation = 3; // torque mode = 5 // velocity = 3 // position = 1
-        output_pdos[i]->target_torque = 0.03; //before: 3 / 0.03
-        output_pdos[i]->max_current = 1.7; // before: 3990 / 1.7
-        //output_pdos[i]->target_position = input_pdos[i]->actual_position;
-        //output_pdos[i]->target_position = 749164678; //639164678
-        //printf("Actual position of motor %u : %lu \n",i ,input_pdos[i]->actual_position);
-        output_pdos[i]->target_velocity = 10; 
-        //output_pdos[i]->polarity = 0;
-    } 
-         
-
-
-    
-
-
-    // Definir notas como niveles de torque
-    //constexpr float NOTA_BAJA = 0.03f;
-    constexpr float NOTA_MEDIA = 0.05f;
-    //constexpr float NOTA_ALTA = 1.5f;
-    constexpr float SILENCIO = 0.0f;
-
-    std::vector<float> melodia = { //200ms
-
-        SILENCIO,SILENCIO,SILENCIO,
-
-        // ta ta ta
-        NOTA_MEDIA, SILENCIO,
-        NOTA_MEDIA, SILENCIO,
-        NOTA_MEDIA, SILENCIO,
-        SILENCIO,
-
-        // ta ta ta
-        NOTA_MEDIA, SILENCIO,
-        NOTA_MEDIA, SILENCIO,
-        NOTA_MEDIA, SILENCIO,
-        
-        SILENCIO,
-
-        // ta ta ta ta-ta
-        NOTA_MEDIA, SILENCIO,
-        NOTA_MEDIA, SILENCIO,
-        NOTA_MEDIA, SILENCIO,
-        NOTA_MEDIA, NOTA_MEDIA, SILENCIO,
-        //NOTA_MEDIA, NOTA_MEDIA, NOTA_MEDIA, NOTA_MEDIA, NOTA_MEDIA, SILENCIO,
-
-        SILENCIO,SILENCIO,SILENCIO,
-    
-         // ta ta ta | ta-ta ta ta | ta-ta-ta ta ta ta
-        NOTA_MEDIA, SILENCIO,
-        NOTA_MEDIA, SILENCIO,
-        NOTA_MEDIA, SILENCIO,
-        
-        NOTA_MEDIA, NOTA_MEDIA, SILENCIO,
-        NOTA_MEDIA, SILENCIO,
-        NOTA_MEDIA, SILENCIO,
-
-        NOTA_MEDIA, NOTA_MEDIA, NOTA_MEDIA, SILENCIO,
-        NOTA_MEDIA, SILENCIO,
-    
-        NOTA_MEDIA, SILENCIO,
-        NOTA_MEDIA, SILENCIO,
-        NOTA_MEDIA, SILENCIO,
-
-
-        SILENCIO,SILENCIO,SILENCIO,
-        SILENCIO,SILENCIO,SILENCIO,
-        SILENCIO,SILENCIO,SILENCIO,
-        SILENCIO,SILENCIO,SILENCIO,
-        SILENCIO,SILENCIO,SILENCIO, 
-    };
-
-
-    
-
-    constexpr int DURACION_NOTA_MS = 200;
-
-    constexpr int PASOS_POR_NOTA = DURACION_NOTA_MS / 10;
-
-    size_t nota_idx = 0;
-    int paso_nota_actual = 0;
-    bool turno_motor_0 = true;
+        output_pdos[i]->mode_of_operation = 5; // torque mode
+        output_pdos[i]->target_torque = 0.03; //before: 3
+        output_pdos[i]->max_current = 1.7; // before: 3990
+        output_pdos[i]->target_position = input_pdos[i]->actual_position;
+    }
 
     constexpr int64_t LOOP_NUMBER = 12 * 3600 * 1000; // 12 hours of execution 
     int64_t last_error = 0;
-
-    int k = 0;
-    int v = 0;
-    bool ori = true;
-
+    
     for (int64_t i = 0; i < LOOP_NUMBER; ++i)
     {
-
-
-/*
-        if (turno_motor_0) {
-            output_pdos[0]->target_torque = melodia[nota_idx];
-            output_pdos[1]->target_torque = SILENCIO;
-        } else {
-            output_pdos[0]->target_torque = SILENCIO;
-            output_pdos[1]->target_torque = melodia[nota_idx];
-        }
-
-        paso_nota_actual++;
-
-        if (paso_nota_actual >= PASOS_POR_NOTA)
-        {
-            paso_nota_actual = 0;
-            nota_idx = (nota_idx + 1) % melodia.size();
-            turno_motor_0 = !turno_motor_0; // Alternar motor
-        } 
-*/
-        
-/* */        
-        if(k > 10)
-        {
-            k = 0;
-            if(v == 3) ori = true;
-            if(v > 15 && ori) ori = !ori;
-            if(ori) v++;
-            else v--;
-            output_pdos[0]->target_velocity =   v;
-            output_pdos[1]->target_velocity =   v;
-
-        }
-        k = k+1; 
-        
-/* */
-
-
-
         sleep(10ms);
 
         try

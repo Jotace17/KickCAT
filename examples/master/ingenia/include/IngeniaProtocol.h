@@ -18,6 +18,7 @@ namespace kickcat
             int32_t demand_position;            // 0x2078 ticks
             int32_t auxiliar_position;          // 0x2033
             uint16_t mode_of_operation_display; // 0x2015
+
         } __attribute__((packed));
         constexpr uint32_t tx_mapping[] = {0x20110010, 0x20300020, 0x20310020, 0x20530020, 0x20290020, 0x20600020, 0x20780020, 0x20330020, 0x20150010}; // uint32_t is 0x[Address(4byte), SubIndex(2byte), typeSizeInBits(2byte)]
         constexpr uint32_t tx_mapping_count = sizeof(tx_mapping) / sizeof(uint32_t);
@@ -28,9 +29,14 @@ namespace kickcat
             uint16_t mode_of_operation; // 0x2014
             float target_torque;        // 0x2022 Nm
             float max_current;          // 0x21E0 A
-            int32_t target_position;    // 0x2020 ticks
+            int32_t target_position;    // 0x2020 ticks  //607A?
+            
+            //target == set-point
+            float target_velocity;      // 0x2021 rev/s 0x20210020
+            //uint32_t polarity;     //0x2603  (0 or 1)   
+
         } __attribute__((packed));
-        constexpr uint32_t rx_mapping[] = {0x20100010, 0x20140010, 0x20220020, 0x21E00020, 0x20200020}; // uint32_t is 0x[Address(4byte), SubIndex(2byte), typeSizeInBits(2byte)]
+        constexpr uint32_t rx_mapping[] = {0x20100010, 0x20140010, 0x20220020, 0x21E00020, 0x20200020, 0x20210020}; // uint32_t is 0x[Address(4byte), SubIndex(2byte), typeSizeInBits(2byte)]
         constexpr uint32_t rx_mapping_count = sizeof(rx_mapping) / sizeof(uint32_t);
     }
 }
